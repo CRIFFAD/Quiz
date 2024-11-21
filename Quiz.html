@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Computing Careers Quiz</title>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .quiz-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+        }
+        .option {
+            margin: 5px 0;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        #feedback-form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Computing Careers Quiz</h1>
+        
+        <form id="quiz-form">
+            <div class="question">
+                <p>1. Which of the following is NOT a computing specialization?</p>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="A"> A. Software Development
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="B"> B. Cloud Computing
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="C"> C. Accounting
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="D"> D. Cybersecurity
+                    </label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. What is the primary focus of a cybersecurity specialist?</p>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="A"> A. Building websites
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="B"> B. Protecting systems and networks from cyber threats
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="C"> C. Managing cloud resources
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="D"> D. Analyzing large datasets
+                    </label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. How does a data scientist contribute to a business?</p>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="A"> A. Secures organizational networks
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="B"> B. Manages IT resources
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="C"> C. Analyzes data to uncover trends and insights
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="D"> D. Develops mobile applications
+                    </label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>4. What is the role of a cloud computing specialist?</p>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="A"> A. Designing cloud-based systems
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="B"> B. Testing software applications
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="C"> C. Creating game graphics
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="D"> D. Troubleshooting computer hardware
+                    </label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>5. What is the main difference between front-end and back-end developers?</p>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="A"> A. Front-end developers build databases, while back-end developers focus on user interfaces
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="B"> B. Front-end developers handle user interfaces, while back-end developers manage databases and server-side logic
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="C"> C. Both focus on the user experience
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="D"> D. They handle different programming languages
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit">Submit Quiz</button>
+        </form>
+
+        <div id="result"></div>
+
+        <form id="feedback-form" style="display:none;">
+            <h3>Your Quiz Feedback</h3>
+            <input type="email" id="user-email" placeholder="Your Email" required>
+            <textarea id="user-feedback" placeholder="Additional comments (optional)"></textarea>
+            <button type="submit">Send Feedback</button>
+        </form>
+    </div>
+
+    <script>
+        // Correct answers
+        const correctAnswers = {
+            q1: 'C',
+            q2: 'B',
+            q3: 'C',
+            q4: 'A',
+            q5: 'B'
+        };
+
+        // Email.js configuration
+        (function(){
+            emailjs.init("xxxxxxxxxx"); // YOU MUST REPLACE WITH YOUR EMAIL.JS USER ID
+        })();
+
+        document.getElementById('quiz-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let score = 0;
+            let resultText = '';
+
+            // Check answers
+            for (let i = 1; i <= 5; i++) {
+                const selectedAnswer = document.querySelector(`input[name="q${i}"]:checked`);
+                
+                if (selectedAnswer) {
+                    if (selectedAnswer.value === correctAnswers[`q${i}`]) {
+                        score++;
+                    }
+                }
+            }
+
+            // Display result
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <h3>Your Score: ${score}/5</h3>
+                <p>Percentage: ${(score/5 * 100).toFixed(2)}%</p>
+                ${score === 5 ? '<p>Perfect score! Congratulations!</p>' : ''}
+            `;
+
+            // Show feedback form
+            document.getElementById('feedback-form').style.display = 'block';
+        });
+
+        // Feedback form submission
+        document.getElementById('feedback-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userEmail = document.getElementById('user-email').value;
+            const userFeedback = document.getElementById('user-feedback').value || 'No additional comments';
+
+            // Send email using Email.js
+            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+                from_email: userEmail,
+                message: `Quiz Score: ${score}/5\nFeedback: ${userFeedback}`,
+                reply_to: "criffad24@gmail.com"
+            }).then(
+                function(response) {
+                    alert('Feedback sent successfully!');
+                },
+                function(error) {
+                    alert('Failed to send feedback. Please try again.');
+                    console.log(error);
+                }
+            );
+        });
+    </script>
+</body>
+</html>
